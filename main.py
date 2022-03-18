@@ -48,7 +48,7 @@ def login():
         conn.commit()
 
         response.set_cookie("fb_session", cookie_value, path="/")
-        redirect("/")
+        redirect("/user/")
 
 
 @route("/signup", method=["GET", "POST"])
