@@ -1,9 +1,28 @@
 from bottle import route, run, template, request, response, redirect, abort
 import sqlite3
-import random
+from helpers import somme, generate_cookie_value
 
 def generate_cookie_value():
+    """
+    >>> len(generate_cookie_value())
+    128
+    """
     return str("".join(random.choice("0123456789ABCDEFabcdef@&!") for i in range(128)))
+
+def somme(a,b):
+    """
+    >>> somme(2,6)
+    8
+    """
+    return int(a) + int(b) 
+
+
+   
+
+@route("/addition/<a>/<b>")
+@route("/addition/<a>/<b>/")
+def addition_test(a="0",b="0"):
+    return {'result': somme(a,b)}
 
 @route("/user")
 @route("/user/")
