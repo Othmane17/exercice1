@@ -1,3 +1,4 @@
+import sys
 from bottle import route, run, template, request, response, redirect
 import sqlite3
 from helpers import somme, generate_cookie_value
@@ -73,4 +74,4 @@ def signup():
         return {"error": False, "message": f"Bien enregistré en tant que {username} id: {cursor.lastrowid}"}
 
 
-run(host='localhost', port=8080, reloader=True)
+run(host="0.0.0", port=sys.argv[1], reloader=True)
