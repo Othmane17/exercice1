@@ -1,1 +1,1 @@
-web: python migration.py ; main.py $PORT
+web: python migration.py ; python main.py $PORT
