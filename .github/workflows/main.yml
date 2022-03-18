@@ -63,6 +63,6 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "excelia-exo--1"
+          heroku_app_name: "excelia-1"
           heroku_email: "othmanechahid1@gmail.com"
 
