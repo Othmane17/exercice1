@@ -1,4 +1,5 @@
-import random 
+import random
+
 
 def generate_cookie_value():
     """
@@ -7,9 +8,10 @@ def generate_cookie_value():
     """
     return str("".join(random.choice("0123456789ABCDEFabcdef@&!") for i in range(128)))
 
-def somme(a,b):
+
+def somme(a, b):
     """
     >>> somme(2,6)
     8
     """
-    return int(a) + int(b) 
+    return int(a) + int(b)

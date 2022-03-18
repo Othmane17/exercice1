@@ -1,28 +1,13 @@
-from bottle import route, run, template, request, response, redirect, abort
+from bottle import route, run, template, request, response, redirect
 import sqlite3
 from helpers import somme, generate_cookie_value
 
-def generate_cookie_value():
-    """
-    >>> len(generate_cookie_value())
-    128
-    """
-    return str("".join(random.choice("0123456789ABCDEFabcdef@&!") for i in range(128)))
-
-def somme(a,b):
-    """
-    >>> somme(2,6)
-    8
-    """
-    return int(a) + int(b) 
-
-
-   
 
 @route("/addition/<a>/<b>")
 @route("/addition/<a>/<b>/")
-def addition_test(a="0",b="0"):
-    return {'result': somme(a,b)}
+def addition_test(a="0", b="0"):
+    return {'result': somme(a, b)}
+
 
 @route("/user")
 @route("/user/")
@@ -54,15 +39,16 @@ def login():
         db_password = cursor.fetchone()
         print(db_password)
         if db_password[0] == "":
-            return{"error":True, "message": "Utilisateur inconnu"}
+            return{"error": True, "message": "Utilisateur inconnu"}
         if db_password[0] != password:
-            return{"error":True, "message": "Mot de passe erroné"}
+            return{"error": True, "message": "Mot de passe erroné"}
         cookie_value = generate_cookie_value()
         cursor.execute(f"UPDATE facebook SET cookie = '{cookie_value}' WHERE username = '{username}' ")
         conn.commit()
 
         response.set_cookie("fb_session", cookie_value, path="/")
         redirect("/")
+
 
 @route("/signup", method=["GET", "POST"])
 @route("/signup/", method=["GET", "POST"])
@@ -76,14 +62,15 @@ def signup():
         print(username)
         print(email)
         print(password)
-        if username =="":
-            return {"error": True, "message" : "il manque le nom d'utilisateur"}
+        if username == "":
+            return {"error": True, "message": "il manque le nom d'utilisateur"}
         conn = sqlite3.connect("fb.db")
         cursor = conn.cursor()
         sql_request = f"INSERT INTO facebook (username, email, password) VALUES ('{username}', '{email}', '{password}')"
         print(sql_request)
         cursor.execute(sql_request)
         conn.commit()
-        return { "error": False, "message": f"Bien enregistré en tant que {username} id: {cursor.lastrowid}"}
+        return {"error": False, "message": f"Bien enregistré en tant que {username} id: {cursor.lastrowid}"}
+
 
 run(host='localhost', port=8080, reloader=True)
