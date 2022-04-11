@@ -7,15 +7,15 @@ from helpers import somme, generate_cookie_value
 @route("/addition/<a>/<b>")
 @route("/addition/<a>/<b>/")
 def addition_test(a="0", b="0"):
-    return {'result': somme(a, b)}
+    return {"result": somme(a, b)}
 
 
 @route("/user")
 @route("/user/")
 def user_info():
-    fb_session = request.get_cookie('fb_session')
+    fb_session = request.get_cookie("fb_session")
 
-    conn = sqlite3.connect('fb.db')
+    conn = sqlite3.connect("fb.db")
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM facebook WHERE cookie= '{fb_session}'")
     result = cursor.fetchone()
@@ -34,17 +34,19 @@ def login():
         username = request.forms.username
         password = request.forms.password
 
-        conn = sqlite3.connect('fb.db')
+        conn = sqlite3.connect("fb.db")
         cursor = conn.cursor()
         cursor.execute(f"SELECT password FROM facebook WHERE username = '{username}' ")
         db_password = cursor.fetchone()
         print(db_password)
         if db_password[0] == "":
-            return{"error": True, "message": "Utilisateur inconnu"}
+            return {"error": True, "message": "Utilisateur inconnu"}
         if db_password[0] != password:
-            return{"error": True, "message": "Mot de passe erroné"}
+            return {"error": True, "message": "Mot de passe erroné"}
         cookie_value = generate_cookie_value()
-        cursor.execute(f"UPDATE facebook SET cookie = '{cookie_value}' WHERE username = '{username}' ")
+        cursor.execute(
+            f"UPDATE facebook SET cookie = '{cookie_value}' WHERE username = '{username}' "
+        )
         conn.commit()
 
         response.set_cookie("fb_session", cookie_value, path="/")
@@ -71,7 +73,10 @@ def signup():
         print(sql_request)
         cursor.execute(sql_request)
         conn.commit()
-        return {"error": False, "message": f"Bien enregistré en tant que {username} id: {cursor.lastrowid}"}
+        return {
+            "error": False,
+            "message": f"Bien enregistré en tant que {username} id: {cursor.lastrowid}",
+        }
 
 
 run(host="0.0.0.0", port=sys.argv[1], reloader=True)
